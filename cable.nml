@@ -3,12 +3,12 @@
    filename%log = 'log_cable.txt'
    filename%restart_in  = ' ' 
    filename%restart_out = 'restart/cable_rst.nc'
-   filename%type    = '/g/data/rp23//gridinfo_CSIRO_1x1.nc'
+   filename%type    = 'ACCESS-ESM1p5-1p875x1p25-gridinfo-CABLE-withicefix-ESMStash.nc'
    filename%veg    = '/g/data/rp23/data/no_provenance/parameter/def_veg_params.txt'
    filename%soil    = '/g/data/rp23/data/no_provenance/parameter/def_soil_params.txt'
    vegparmnew = .TRUE.  ! using new format when true
    soilparmnew = .TRUE.  ! using new format when true
-   spinup = .TRUE.  ! do we spin up the model?
+   spinup = .FALSE.  ! do we spin up the model?
    delsoilM = 0.001   ! allowed variation in soil moisture for spin up
    delsoilT = 0.01    ! allowed variation in soil temperature for spin up
    output%restart = .TRUE.  ! should a restart file be created?
@@ -21,6 +21,7 @@
    output%veg       = .TRUE.  ! vegetation states
    output%params    = .TRUE.  ! input parameters used to produce run
    output%balances  = .TRUE.  ! energy and water balances
+   output%averaging = "monthly"
    check%ranges     = 0       ! variable ranges, input and output
    check%energy_bal = .TRUE.  ! energy balance
    check%mass_bal   = .TRUE.  ! water/mass balance
@@ -40,20 +41,21 @@
    casafile%cnpmetin=''          ! list of daily met files for spinning casacnp
    casafile%phen='/projects/access/CABLE-AUX/core/biogeochem/modis_phenology_csiro.txt'        ! modis phenology
    casafile%cnpflux='cnpfluxOut.csv'
-   ncciy = 0 ! 0 for not using gswp; 4-digit year input for year of gswp met
-   gswpfile%rainf = 'ACCESS-ESM1p5-to-CABLE_rainf_1960.nc'
-   gswpfile%snowf = 'ACCESS-ESM1p5-to-CABLE_snow_1960.nc'
-   gswpfile%LWdown = 'ACCESS-ESM1p5-to-CABLE_lw_1960.nc'
-   gswpfile%SWdown = 'ACCESS-ESM1p5-to-CABLE_sw_1960.nc'
-   gswpfile%PSurf = 'ACCESS-ESM1p5-to-CABLE_ps_1960.nc'
-   gswpfile%Qair = 'ACCESS-ESM1p5-to-CABLE_qa_1960.nc'
-   gswpfile%Tair = 'ACCESS-ESM1p5-to-CABLE_ta_1960.nc'
-   gswpfile%wind = 'ACCESS-ESM1p5-to-CABLE_windspeed_1960.nc'
-   gswpfile%mask = 'ACCESS-ESM1p5-1p875x1p25-landmask-6pts.nc'
+   ncciy = 1960 ! 0 for not using gswp; 4-digit year input for year of gswp met
+   gswpfile%rainf = 'ACCESS-ESM1p5-to-CABLE_Rainf_1960.nc'
+   gswpfile%snowf = 'ACCESS-ESM1p5-to-CABLE_Snowf_1960.nc'
+   gswpfile%LWdown = 'ACCESS-ESM1p5-to-CABLE_LWdown_1960.nc'
+   gswpfile%SWdown = 'ACCESS-ESM1p5-to-CABLE_SWdown_1960.nc'
+   gswpfile%PSurf = 'ACCESS-ESM1p5-to-CABLE_Psurf_1960.nc'
+   gswpfile%Qair = 'ACCESS-ESM1p5-to-CABLE_huss_1960.nc'
+   gswpfile%Tair = 'ACCESS-ESM1p5-to-CABLE_Tair_1960.nc'
+   gswpfile%wind = 'ACCESS-ESM1p5-to-CABLE_wind_1960.nc'
+   gswpfile%mask = 'ACCESS-ESM1p5-1p875x1p25-landmask-global.nc'
    cable_user%YearStart = 1960
-   cable_user%YearEnd = 1961
-   cable_user%MetType = "gswp3"
+   cable_user%YearEnd = 1969
+   cable_user%MetType = "gswp"
    cable_user%GSWP3 = .TRUE.
+   cable_user%as_ACCESS = .TRUE.
    redistrb = .FALSE.  ! Turn on/off the hydraulic redistribution
    wiltParam = 0.5
    satuParam = 0.8
@@ -66,7 +68,7 @@
    cable_user%RUN_DIAG_LEVEL= 'BASIC'        ! choices are: 
                                                  ! 1. BASIC
                                                  ! 1. NONE
-   cable_user%CONSISTENCY_CHECK= .TRUE.      ! TRUE outputs combined fluxes at each timestep for comparisson to A control run 
+   cable_user%CONSISTENCY_CHECK= .FALSE.      ! TRUE outputs combined fluxes at each timestep for comparisson to A control run 
    cable_user%CASA_DUMP_READ = .FALSE.      ! TRUE reads CASA forcing from netcdf format
    cable_user%CASA_DUMP_WRITE = .FALSE.      ! TRUE outputs CASA forcing in netcdf format
    cable_user%SSNOW_POTEV= 'HDM'      ! Humidity Deficit Method
